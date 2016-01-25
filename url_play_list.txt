@@ -1,0 +1,59 @@
+#website
+#website
+website=http://www.shoutcast.com/
+
+file_style=Modern
+
+prog_index=1
+prog_name=COOLfahrenheit 93
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+prog_index=2
+prog_name=OXA
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=709809
+
+prog_index=3
+prog_name=ABC Lounge
+media_type=FM4
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=139479
+
+file_style=Piano
+prog_index=1
+prog_name=Abacus.fm Mozart Piano
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175152
+
+file_style=Romantic
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+
+website=http://learning.sohu.com/
+file_style=Unknown
+prog_index=1
+prog_name=Beat it
+media_type=radio
+url=http://learning.sohu.com/zt/freshenglish/sep17/songs.mp3
+
+
+
+website=http://devimages.apple.com
+file_style=Unknown
+prog_index=1
+prog_name=Bipbopall
+media_type=video
+url=http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8
+
+
+
+
+
+
+#website1,file_style1,prog_index1,prog_name1,media_type1,url1;
+#http://www.shoutcast.com/,Modern,1,COOLfahrenheit 93,radio,http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821;
+#index1,prog_name1,media_type1,url1;
+#1,
