@@ -48,7 +48,12 @@ prog_name=Bipbopall
 media_type=video
 url=http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8
 
-
+website=http://www.shoutcast.com/
+file_style=Classic
+prog_index=10
+prog_name=Clasic music
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
 
 
 

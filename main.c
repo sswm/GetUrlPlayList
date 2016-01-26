@@ -19,13 +19,19 @@ _playProperty playHead;
 
 
 
+
+#define URL_PLAY_LIST   "/mnt/uda1/url_play_list.txt"
+//FILE * url_play_list_fp = NULL;
+
+
+
 int main(void) {
 
     if(GetPlayList(file_path, &playHead) < 0) {
         printf("get play list fail\n");
         return -1;
     }
-
+    //free(data);
     printf("\nget file end here\n");
 
     return 0;

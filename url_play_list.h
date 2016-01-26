@@ -7,7 +7,9 @@
 #define PROG_NAME_SIZE          50
 #define URL_SIZE                   1024
 typedef struct playProperty {
+    int website_id;
     char website[ADDRESS_SIZE];
+    int file_style_id;
     char file_style[STYLE_SIZE];
     int prog_index;
     char prog_name[PROG_NAME_SIZE];
@@ -15,6 +17,18 @@ typedef struct playProperty {
     char url[URL_SIZE];
     struct playProperty *next;
 }_playProperty;
+
+
+typedef struct webSiteIdProperty {
+    _playProperty *current_play;
+    struct webSiteIdProperty *next;
+}_webSiteIdProperty;
+
+typedef struct styleIdProperty {
+    _playProperty *current_play;
+    struct styleIdProperty *next;
+}_styleIdProperty;
+
 
 
 
