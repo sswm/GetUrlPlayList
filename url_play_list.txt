@@ -1,6 +1,6 @@
 #website
 #website
-website=http://www.shoutcast.com/
+website=shoutcast.com
 
 file_style=Modern
 
@@ -32,7 +32,7 @@ media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
 
 
-website=http://learning.sohu.com/
+website=sohu.com
 file_style=Unknown
 prog_index=1
 prog_name=Beat it
@@ -41,7 +41,7 @@ url=http://learning.sohu.com/zt/freshenglish/sep17/songs.mp3
 
 
 
-website=http://devimages.apple.com
+website=apple.com
 file_style=Unknown
 prog_index=1
 prog_name=Bipbopall

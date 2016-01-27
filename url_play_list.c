@@ -32,6 +32,8 @@
 
 
 int max_website_id = 0;
+int max_web_style_id[MAX_WEB_SITE_NUM] = {0};
+int max_web_style_file_id[MAX_WEB_SITE_NUM][MAX_STYLE_NUM] = {0};
 
 _webSiteIdProperty webNum[MAX_WEB_SITE_NUM];
 
@@ -121,7 +123,7 @@ int ShowWebIdStyleId(int web_id, int style_id) {
         SelPrintf("%s = %s\n", URL_STR, p->url);    
         SelPrintf("\n");
 
-
+        max_web_style_file_id[web_id][style_id]++;
         styleTmp = styleTmp->next;
     }
     return 0;
@@ -150,7 +152,7 @@ void SortStyleByWebId(int web_id, _playProperty *play_head) {
         
         if(p->file_style_id == 0) {
             p->file_style_id = ++start_id;
-
+            max_web_style_id[web_id] = p->file_style_id;
             styleTmp = (_styleIdProperty *)malloc(sizeof(_styleIdProperty));
             if (styleTmp == NULL) {
                 SelPrintf("malloc fail:%s   %d\n", __FUNCTION__, __LINE__);    
@@ -299,7 +301,7 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
     char buf[BUF_SIZE];
     int ret;
     _playProperty tmp;
-    int i;
+    int i, j;
 
     
     memset(&tmp, 0, sizeof(_playProperty));
@@ -369,13 +371,20 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
         SortStyleByWebId(i+1, play_head);
     }
 
+    for(i = 1; i <= max_website_id; i++) {
+        for(j = 1; j <= max_web_style_id[i]; j++) {
+            ShowWebIdStyleId(i, j);
+        }
 
+    }
+    /*
     ShowWebIdStyleId(1, 1);
     ShowWebIdStyleId(1, 2);
     ShowWebIdStyleId(1, 3);
     ShowWebIdStyleId(1, 4);
     ShowWebIdStyleId(2, 1);
     ShowWebIdStyleId(2, 2);
+    */
     return 0;
 }
 
