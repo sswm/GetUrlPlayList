@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "str_separate.h"
 
 #define     WEBSITE_STR         "website"
 #define     FILE_STYLE_STR      "file_style"
@@ -31,9 +32,31 @@
 #endif
 
 
+
 int max_website_id = 0;
 int max_web_style_id[MAX_WEB_SITE_NUM] = {0};
 int max_web_style_file_id[MAX_WEB_SITE_NUM][MAX_STYLE_NUM] = {0};
+int max_web_file_id[MAX_WEB_SITE_NUM] = {0};
+
+int current_website_id = 1;
+int current_style_id = 1;
+int current_file_id = 1;
+
+
+int last_website_id = -1;
+int last_style_id = -1;
+int last_file_id = -1;
+
+
+
+
+int current_webTop = 0;
+int current_styleTop = 0;
+int current_fileTop = 0;
+
+int last_webTop = -1;
+int last_styleTop = -1;
+int last_fileTop = -1;
 
 _webSiteIdProperty webNum[MAX_WEB_SITE_NUM];
 
@@ -51,7 +74,7 @@ int PutIntoHead(_playProperty *tmp, _playProperty *play_head) {
         SelPrintf("malloc _playProperty fail:%s   %d\n", __FUNCTION__, __LINE__);
         return -1;
     }
-    
+
     p->next = play_head->next;
     play_head->next = p;
 
@@ -64,7 +87,7 @@ int PutIntoHead(_playProperty *tmp, _playProperty *play_head) {
 
     p->website_id = tmp->website_id;
     p->file_style_id = tmp->file_style_id;
-    
+
     return 0;
 
 }
@@ -144,12 +167,12 @@ void SortStyleByWebId(int web_id, _playProperty *play_head) {
 
     //styleNum
 
-    
+
     webTmp = webNum[web_id].next;
-    
+
     while(webTmp != NULL) {
         p = webTmp->current_play;
-        
+        max_web_file_id[web_id]++;
         if(p->file_style_id == 0) {
             p->file_style_id = ++start_id;
             max_web_style_id[web_id] = p->file_style_id;
@@ -162,10 +185,10 @@ void SortStyleByWebId(int web_id, _playProperty *play_head) {
             styleTmp->next = styleNum[web_id][p->file_style_id].next;
             styleNum[web_id][p->file_style_id].next = styleTmp;
 
-            
+
             webTmpTmp = webTmp->next;
             while(webTmpTmp != NULL) {
-                
+
                 q = webTmpTmp->current_play;
                 if (q->file_style_id == 0) {
                     if(!strncmp(p->file_style, q->file_style, strlen(p->file_style))) {
@@ -180,14 +203,14 @@ void SortStyleByWebId(int web_id, _playProperty *play_head) {
                         styleTmp->next = styleNum[web_id][q->file_style_id].next;
                         styleNum[web_id][q->file_style_id].next = styleTmp;
 
-                        
+
                     }
                 }
                 webTmpTmp = webTmpTmp->next;
             }
 
         }
-        
+
         SelPrintf("XXXXX\n");
         SelPrintf("website_id = %d\n", p->website_id);
         SelPrintf("%s = %s\n", WEBSITE_STR, p->website);
@@ -199,10 +222,10 @@ void SortStyleByWebId(int web_id, _playProperty *play_head) {
         SelPrintf("%s = %s\n", URL_STR, p->url);    
         SelPrintf("\n");
 
-        
+
         webTmp = webTmp->next;
     }
-    
+
 }
 
 
@@ -214,9 +237,9 @@ void SortByWebSite(_playProperty *play_head) {
     int start_id = 0;
 
     _webSiteIdProperty *webTmp;
-    
+
     int i;
-    
+
     p = play_head->next;
     if(p == NULL) {
         SelPrintf("not data here\n");
@@ -225,8 +248,8 @@ void SortByWebSite(_playProperty *play_head) {
 
 
 
-   
-    
+
+
     while(p != NULL) {
         if(p->website_id == 0) {
             p->website_id = ++start_id;
@@ -243,14 +266,14 @@ void SortByWebSite(_playProperty *play_head) {
             webTmp->current_play = p;
             webTmp->next = webNum[p->website_id].next;
             webNum[p->website_id].next = webTmp;
-                
+
             tmp = p->next;
             while(tmp != NULL) {
                 if(tmp->website_id == 0) {
                     if(!strncmp(p->website, tmp->website, strlen(p->website))) {
                         tmp->website_id = p->website_id;
 
-                        
+
                         webTmp = (_webSiteIdProperty *)malloc(sizeof(_webSiteIdProperty));
                         if (webTmp == NULL) {
                             SelPrintf("malloc fail:%s   %d\n", __FUNCTION__, __LINE__);    
@@ -261,7 +284,7 @@ void SortByWebSite(_playProperty *play_head) {
                         webNum[p->website_id].next = webTmp;
 
 
-                        
+
                     }
                 }
                 tmp = tmp->next;
@@ -289,12 +312,121 @@ void SortByWebSite(_playProperty *play_head) {
             }
             p = p->next;
         }
-    
+
     }
-    
+
 #endif
-    
+
 }
+
+
+
+void InitAllData(void) {
+    int i,j;
+
+    for(i = 0; i < MAX_WEB_SITE_NUM; i++) {
+        max_web_style_id[i] = 0;
+        max_web_file_id[i] = 0;
+        for(j = 0; j < MAX_STYLE_NUM; j++) {
+            max_web_style_file_id[i][j] = 0;
+        }
+    }
+    current_website_id = 1;
+    current_style_id = 1;
+    current_file_id = 1;
+    
+    last_website_id = -1;
+    last_style_id = -1;
+    last_file_id = -1;
+    
+
+    current_webTop = 0;
+    current_styleTop = 0;
+    current_fileTop = 0;
+    
+    last_webTop = -1;
+    last_styleTop = -1;
+    last_fileTop = -1;
+
+    
+
+}
+
+void FreeMallocData(_playProperty *play_head) {
+    int i,j;
+    _styleIdProperty *styleTmp;
+     _styleIdProperty *free_styleTmp;
+
+    _webSiteIdProperty *webTmp;
+    
+    _webSiteIdProperty *free_webTmp;
+
+
+    _playProperty *playHeadTmp;
+    _playProperty *free_playHeadTmp;
+
+    
+
+
+
+    for(i = 0; i < MAX_WEB_SITE_NUM; i++) {
+        for(j = 0; j < MAX_STYLE_NUM; j++) {
+            free_styleTmp = styleNum[i][j].next; 
+            styleNum[i][j].next = NULL;
+            styleNum[i][j].current_play = NULL;
+            while(free_styleTmp != NULL) {
+                styleTmp = free_styleTmp->next;
+                //SelPrintf("free :%d %d %s\n", i, j, free_styleTmp->current_play->prog_name);
+                //osal_task_sleep(200);
+                free_styleTmp->next = NULL;
+                free_styleTmp->current_play = NULL;
+                free(free_styleTmp);
+                free_styleTmp = styleTmp;
+            }
+        }
+        
+        free_webTmp = webNum[i].next;
+        webNum[i].next = NULL;
+        webNum[i].current_play = NULL;
+        while(free_webTmp != NULL) {
+            webTmp = free_webTmp->next;
+            //SelPrintf("free web here :%d %d %s\n", i, j, free_webTmp->current_play->prog_name);
+            //osal_task_sleep(200);
+            free_webTmp->next = NULL;
+            free_webTmp->current_play = NULL;
+            free(free_webTmp);
+            free_webTmp = webTmp;
+        }
+
+    }
+
+
+    free_playHeadTmp = play_head->next;
+    play_head->next = NULL;
+    bzero(play_head, sizeof(_playProperty));
+    while(free_playHeadTmp != NULL) {
+        playHeadTmp = free_playHeadTmp->next;
+        free_playHeadTmp->next = NULL;
+        //SelPrintf("free data here:%s\n", free_playHeadTmp->prog_name);
+        //osal_task_sleep(200);
+        bzero(free_playHeadTmp, sizeof(_playProperty));
+        free(free_playHeadTmp);
+        free_playHeadTmp = playHeadTmp;
+
+    }
+    SelPrintf("free all data here~~\n");
+
+}
+
+
+void FreeAllLocate(_playProperty *play_head) {
+    //free maclloc here
+    FreeMallocData(play_head);
+    InitAllData();
+
+}
+
+
 
 int GetPlayList(char *file_path, _playProperty *play_head) {
     FILE *fp;
@@ -302,26 +434,35 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
     int ret;
     _playProperty tmp;
     int i, j;
-
-    
-    memset(&tmp, 0, sizeof(_playProperty));
+    static int getPlayListFlag = -1;
     fp = fopen(file_path, "r");
     if(fp == NULL) {
-        SelPrintf("[%s:%d]open %s fail", __FUNCTION__, __LINE__, file_path); 
-        return -1;
+        SelPrintf("[%s:%d]open %s fail use before file list\n", __FUNCTION__, __LINE__, file_path); 
+        return getPlayListFlag;
     }
+
+    if (getPlayListFlag == 1) {
+
+        FreeAllLocate(play_head);
+        //return 0; 
+    }
+
+
+    
     SelPrintf("start here\n\n");
+
+    memset(&tmp, 0, sizeof(_playProperty));   
     play_head->next = NULL;
     while(!feof(fp)) {
         bzero(buf, sizeof(buf));
         if(fgets(buf, BUF_SIZE, fp)) {
             if((buf[0] != '\r') && (buf[0] != '\n')) {
-                
+
                 if(buf[0] != '#') {
                     //SelPrintf("%s", buf); 
-                    
-                    buf[strlen(buf) - 1] = '\0';
-                    
+
+                    //buf[strlen(buf) - 1] = '\0';
+                    trim(buf);
                     if(!strncmp(buf, WEBSITE_STR, strlen(WEBSITE_STR))) {
                         strcpy(tmp.website, &buf[strlen(WEBSITE_STR) + 1]);   
                         //SelPrintf("%s = %s\n", WEBSITE_STR, tmp.website);
@@ -342,7 +483,7 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
                         //SelPrintf("%s = %s\n", URL_STR, tmp.url);
                     }
 
-                    
+
                     if(!strncmp(buf, "url=", 4)) {
                         tmp.website_id = 0;
                         tmp.file_style_id = 0;
@@ -351,7 +492,7 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
                         }
                         SelPrintf("\n");
                     }
-                    
+
                 }
             }
         } else {
@@ -359,7 +500,7 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
         }
 
     }
-    
+
     fclose(fp);
 
 
@@ -377,14 +518,31 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
         }
 
     }
+
+
+
+    SelPrintf("max_website_id:%d\n", max_website_id);
+    for(i = 1; i <= max_website_id; i++) {
+        SelPrintf("max_style is %d\n", max_web_style_id[i]);
+
+    }
+
+    for(i = 1; i <= max_website_id; i++) {
+        for(j = 1; j <= max_web_style_id[i]; j++) {
+            SelPrintf("max web sytle file is %d\n", max_web_style_file_id[i][j]);
+        }
+    }
+
+    getPlayListFlag = 1;
     /*
-    ShowWebIdStyleId(1, 1);
-    ShowWebIdStyleId(1, 2);
-    ShowWebIdStyleId(1, 3);
-    ShowWebIdStyleId(1, 4);
-    ShowWebIdStyleId(2, 1);
-    ShowWebIdStyleId(2, 2);
-    */
+       ShowWebIdStyleId(1, 1);
+       ShowWebIdStyleId(1, 2);
+       ShowWebIdStyleId(1, 3);
+       ShowWebIdStyleId(1, 4);
+       ShowWebIdStyleId(2, 1);
+       ShowWebIdStyleId(2, 2);
+       */
     return 0;
 }
+
 

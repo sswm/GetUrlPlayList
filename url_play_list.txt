@@ -2,7 +2,7 @@
 #website
 website=shoutcast.com
 
-file_style=Modern
+file_style=
 
 prog_index=1
 prog_name=COOLfahrenheit 93
@@ -25,12 +25,65 @@ prog_name=Abacus.fm Mozart Piano
 media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175152
 
-file_style=Romantic
+file_style=Romantic1
 prog_index=1
 prog_name=SlowRadio.Com
 media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
 
+file_style=
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic4
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic5
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic6
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic7
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic8
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic9
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
+
+file_style=Romantic10
+prog_index=1
+prog_name=SlowRadio.Com
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
 
 website=sohu.com
 file_style=Unknown
@@ -48,7 +101,7 @@ prog_name=Bipbopall
 media_type=video
 url=http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8
 
-website=http://www.shoutcast.com/
+website=shoutcast.com
 file_style=Classic
 prog_index=10
 prog_name=Clasic music
@@ -56,6 +109,76 @@ media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
 
 
+
+
+
+
+
+
+website=new.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=second.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=third.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+
+website=fourth.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=fifth.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+
+website=sixth.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=seventh.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=eight.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
+
+website=ninth.com
+file_style=Classic
+prog_index=1
+prog_name=new1
+media_type=radio
+url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
 
 
 #website1,file_style1,prog_index1,prog_name1,media_type1,url1;
