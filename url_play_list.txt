@@ -2,7 +2,7 @@
 #website
 website=shoutcast.com
 
-file_style=
+file_style=Modern
 
 prog_index=1
 prog_name=COOLfahrenheit 93
@@ -31,13 +31,13 @@ prog_name=SlowRadio.Com
 media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
 
-file_style=
+file_style=Romantic2
 prog_index=1
 prog_name=SlowRadio.Com
 media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=187398
 
-file_style=
+file_style=Romantic3
 prog_index=1
 prog_name=SlowRadio.Com
 media_type=radio
@@ -180,6 +180,20 @@ prog_name=new1
 media_type=radio
 url=http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821
 
+
+website=China
+file_style=Unknown
+prog_index=1
+prog_name=home brocast
+media_type=radio
+url=mms://alive.rbc.cn/am927
+
+website=China
+file_style=Unknown
+prog_index=2
+prog_name=city sound
+media_type=radio
+url=http://ctt.rgd.com.cn:8000/fm1036
 
 #website1,file_style1,prog_index1,prog_name1,media_type1,url1;
 #http://www.shoutcast.com/,Modern,1,COOLfahrenheit 93,radio,http://yp.shoutcast.com/sbin/tunein-station.m3u?id=175821;

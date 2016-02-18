@@ -26,11 +26,17 @@ _playProperty playHead;
 
 
 int main(void) {
-
+    #if 1
+    if(TextRead(file_path, &playHead) < 0) {
+        printf("deal data fail\n");
+        return -1;
+    }
+    #else
     if(GetPlayList(file_path, &playHead) < 0) {
         printf("get play list fail\n");
         return -1;
     }
+    #endif
     //free(data);
     printf("\nget file end here\n");
 

@@ -31,6 +31,10 @@ typedef struct styleIdProperty {
 
 
 
+int TextRead(char *file_path, _playProperty *play_head);
+
+
+void DealGetData(_playProperty *play_head);
 
 
 int GetPlayList(char *file_path, _playProperty *play_head);

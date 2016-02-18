@@ -426,83 +426,125 @@ void FreeAllLocate(_playProperty *play_head) {
 
 }
 
+int ReadLineBuf(char *tmp_buf, int size, char *src) {
+    char *p;
+    int read_size = 0;
+    
+    p = src;
+    while((*p != '\n' )&& (*p != '\0')) {
+        read_size++;
+        p++;
+    }
+    //if(*p != '\0') {
+        read_size++;
+    //}
+    
+    if(read_size > size) {
+        read_size = size;
+    }
+    strncat(tmp_buf, src, read_size);
+    //SelPrintf("size:%d tmp_buf:%s  len:%d\n", size, tmp_buf, read_size);
+    
+    return read_size;
+}
 
 
-int GetPlayList(char *file_path, _playProperty *play_head) {
+
+#define READ_SIZE   8000
+int TextRead(char *file_path, _playProperty *play_head) {
     FILE *fp;
-    char buf[BUF_SIZE];
-    int ret;
-    _playProperty tmp;
-    int i, j;
-    static int getPlayListFlag = -1;
+    int size;
+    char buf[READ_SIZE];
+    char *p;
+    char line_buf[256];
+    int tmp_len;
+    
     fp = fopen(file_path, "r");
+    
     if(fp == NULL) {
         SelPrintf("[%s:%d]open %s fail use before file list\n", __FUNCTION__, __LINE__, file_path); 
-        return getPlayListFlag;
+        return -1;
     }
 
-    if (getPlayListFlag == 1) {
-
-        FreeAllLocate(play_head);
-        //return 0; 
-    }
-
-
-    
-    SelPrintf("start here\n\n");
-
-    memset(&tmp, 0, sizeof(_playProperty));   
-    play_head->next = NULL;
-    while(!feof(fp)) {
-        bzero(buf, sizeof(buf));
-        if(fgets(buf, BUF_SIZE, fp)) {
-            if((buf[0] != '\r') && (buf[0] != '\n')) {
-
-                if(buf[0] != '#') {
-                    //SelPrintf("%s", buf); 
-
-                    //buf[strlen(buf) - 1] = '\0';
-                    trim(buf);
-                    if(!strncmp(buf, WEBSITE_STR, strlen(WEBSITE_STR))) {
-                        strcpy(tmp.website, &buf[strlen(WEBSITE_STR) + 1]);   
-                        //SelPrintf("%s = %s\n", WEBSITE_STR, tmp.website);
-                    } else if(!strncmp(buf, FILE_STYLE_STR, strlen(FILE_STYLE_STR)))  {
-                        strcpy(tmp.file_style, &buf[strlen(FILE_STYLE_STR) + 1]);  
-                        //SelPrintf("%s = %s\n", FILE_STYLE_STR, tmp.file_style);
-                    } else if(!strncmp(buf, PROG_INDEX_STR, strlen(PROG_INDEX_STR)))  {
-                        tmp.prog_index = atoi(&buf[strlen(PROG_INDEX_STR) + 1]);
-                        //SelPrintf("%s = %d\n", PROG_INDEX_STR, tmp.prog_index);
-                    } else if(!strncmp(buf, PROG_NAME_STR, strlen(PROG_NAME_STR)))  {
-                        strcpy(tmp.prog_name, &buf[strlen(PROG_NAME_STR) + 1]);  
-                        //SelPrintf("%s = %s\n", PROG_NAME_STR, tmp.prog_name);
-                    } else if(!strncmp(buf, MEDIA_TYPE_STR, strlen(MEDIA_TYPE_STR)))  {
-                        tmp.media_type = atoi(&buf[strlen(MEDIA_TYPE_STR) + 1]); 
-                        //SelPrintf("%s = %d\n", MEDIA_TYPE_STR, tmp.media_type);
-                    } else if(!strncmp(buf, URL_STR, strlen(URL_STR)))  {
-                        strcpy(tmp.url, &buf[strlen(URL_STR) + 1]);  
-                        //SelPrintf("%s = %s\n", URL_STR, tmp.url);
-                    }
-
-
-                    if(!strncmp(buf, "url=", 4)) {
-                        tmp.website_id = 0;
-                        tmp.file_style_id = 0;
-                        if(PutIntoHead(&tmp, play_head) < 0) {
-                            return -1;
-                        }
-                        SelPrintf("\n");
-                    }
-
-                }
-            }
-        } else {
-            break;
-        }
-
-    }
+    size = fread(buf, 1, READ_SIZE, fp);
+    SelPrintf("read size is %d strlen:%d\n", size, strlen(buf));
 
     fclose(fp);
+    
+    SelPrintf("start printf:\n");
 
+    
+    p = buf;
+    while(size > 0) {
+        bzero(line_buf, sizeof(line_buf));
+        tmp_len = ReadLineBuf(line_buf, size, p);
+
+
+        
+        SelPrintf("%s\n", line_buf);
+        if(PutToStruct(line_buf, play_head) < 0) {
+                return -1;
+        }
+        
+        p += tmp_len;        
+        size -= tmp_len;
+    }
+
+
+    DealGetData(play_head);
+    
+    return 0;
+}
+
+int PutToStruct(char *buf, _playProperty *play_head) {
+    _playProperty tmp;
+
+    
+    if((buf[0] != '\r') && (buf[0] != '\n')) {
+
+        if(buf[0] != '#') {
+            //SelPrintf("%s", buf); 
+
+            //buf[strlen(buf) - 1] = '\0';
+            trim(buf);
+            if(!strncmp(buf, WEBSITE_STR, strlen(WEBSITE_STR))) {
+                strcpy(tmp.website, &buf[strlen(WEBSITE_STR) + 1]);   
+                //SelPrintf("%s = %s\n", WEBSITE_STR, tmp.website);
+            } else if(!strncmp(buf, FILE_STYLE_STR, strlen(FILE_STYLE_STR)))  {
+                strcpy(tmp.file_style, &buf[strlen(FILE_STYLE_STR) + 1]);  
+                //SelPrintf("%s = %s\n", FILE_STYLE_STR, tmp.file_style);
+            } else if(!strncmp(buf, PROG_INDEX_STR, strlen(PROG_INDEX_STR)))  {
+                tmp.prog_index = atoi(&buf[strlen(PROG_INDEX_STR) + 1]);
+                //SelPrintf("%s = %d\n", PROG_INDEX_STR, tmp.prog_index);
+            } else if(!strncmp(buf, PROG_NAME_STR, strlen(PROG_NAME_STR)))  {
+                strcpy(tmp.prog_name, &buf[strlen(PROG_NAME_STR) + 1]);  
+                //SelPrintf("%s = %s\n", PROG_NAME_STR, tmp.prog_name);
+            } else if(!strncmp(buf, MEDIA_TYPE_STR, strlen(MEDIA_TYPE_STR)))  {
+                tmp.media_type = atoi(&buf[strlen(MEDIA_TYPE_STR) + 1]); 
+                //SelPrintf("%s = %d\n", MEDIA_TYPE_STR, tmp.media_type);
+            } else if(!strncmp(buf, URL_STR, strlen(URL_STR)))  {
+                strcpy(tmp.url, &buf[strlen(URL_STR) + 1]);  
+                //SelPrintf("%s = %s\n", URL_STR, tmp.url);
+            }
+
+
+            if(!strncmp(buf, "url=", 4)) {
+                tmp.website_id = 0;
+                tmp.file_style_id = 0;
+                if(PutIntoHead(&tmp, play_head) < 0) {
+                    return -1;
+                }
+                SelPrintf("\n");
+            }
+
+        }
+    }
+
+    return 0;
+}
+
+void DealGetData(_playProperty *play_head) {
+    int i, j;
 
     ShowUrlList(play_head);
 
@@ -533,7 +575,7 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
         }
     }
 
-    getPlayListFlag = 1;
+    
     /*
        ShowWebIdStyleId(1, 1);
        ShowWebIdStyleId(1, 2);
@@ -542,6 +584,52 @@ int GetPlayList(char *file_path, _playProperty *play_head) {
        ShowWebIdStyleId(2, 1);
        ShowWebIdStyleId(2, 2);
        */
+
+}
+
+
+int GetPlayList(char *file_path, _playProperty *play_head) {
+    FILE *fp;
+    char buf[BUF_SIZE];
+    int ret;
+    
+    
+    static int getPlayListFlag = -1;
+    fp = fopen(file_path, "r");
+    if(fp == NULL) {
+        SelPrintf("[%s:%d]open %s fail use before file list\n", __FUNCTION__, __LINE__, file_path); 
+        return getPlayListFlag;
+    }
+
+    if (getPlayListFlag == 1) {
+
+        FreeAllLocate(play_head);
+        //return 0; 
+    }
+
+
+    
+    SelPrintf("start here\n\n");
+
+    play_head->next = NULL;
+    while(!feof(fp)) {
+        bzero(buf, sizeof(buf));
+        if(fgets(buf, BUF_SIZE, fp)) {
+
+            if(PutToStruct(buf, play_head) < 0) {
+                return -1;
+            }
+        } else {
+            break;
+        }
+
+    }
+
+    fclose(fp);
+
+    DealGetData(play_head);
+    
+    getPlayListFlag = 1;
     return 0;
 }
 
